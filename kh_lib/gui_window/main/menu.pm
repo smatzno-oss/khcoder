@@ -419,19 +419,28 @@ sub make{
 			);
 
 		my $f_hukugo = $f->cascade(
-				-label => kh_msg->get('words_cluster'),
+				-label => kh_msg->get("words_cluster"),
 				-font => "TKFN",
-				-tearoff=>'no'
+				-tearoff=>"no"
 			);
 
-		#$self->{m_b1_hukugo_te} = $f_hukugo->command(
-		#		-label => kh_msg->get('use_termextract'),
-		#		-font => "TKFN",
-		#		-command => sub{
-		#				gui_window::use_te->open;
-		#		},
-		#		-state => 'disable'
-		#	);
+		$self->{m_b1_hukugo_te} = $f_hukugo->command(
+				-label => kh_msg->get("use_termextract"),
+				-font => "TKFN",
+				-command => sub{
+						my $w = gui_wait->start;
+					use mysql_hukugo;
+					mysql_hukugo->run_from_morpho;
+					$w->end;
+					my $w = gui_wait->start;
+					use mysql_nounphrases;
+					mysql_nounphrases->detect;
+					$w->end;
+					use gui_window::noun_phrases;
+					gui_window::noun_phrases->open;
+				},
+				-state => "disable"
+			);
 
 		$self->{m_b1_hukugo_np} = $f_hukugo->command(
 				-label => kh_msg->get('noun_phrases'),
@@ -1409,7 +1418,7 @@ sub mc_morpho_dialog{
 			unless ($ans =~ /$ok/i){ return 0; }
 		} else {
 			my $ans = $mw->messageBox(
-				-message => kh_msg->gget('cont_big_pros'),
+				-message => Encode::decode_utf8('前処理を実行しますか？'),
 				-icon    => 'question',
 				-type    => 'OKCancel',
 				-title   => 'KH Coder'
@@ -1521,7 +1530,14 @@ sub mc_hukugo{
 		$w->end;
 	}
 
-	gui_window::hukugo->open;
+	use mysql_hukugo;
+					my $exists = mysql_exec->select("SHOW TABLES LIKE 'hukugo'")->fetchrow_array;
+					unless ($exists) {
+						my $w = gui_wait->start;
+						mysql_hukugo->run_from_morpho;
+						$w->end;
+					}
+					gui_window::noun_phrases->open;
 }
 
 
