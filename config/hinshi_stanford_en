@@ -1,0 +1,11 @@
+hinshi_id,kh_hinshi,condition1,condition2
+2,ProperNoun,NNP,
+1,Noun,NN,
+3,Foreign,FW,
+20,PRP,PRP,
+25,Adj,JJ,
+30,Adv,RB,
+35,Verb,VB,
+40,W,W,
+99999,HTML_TAG,TAG,HTML
+11,TAG,TAG,

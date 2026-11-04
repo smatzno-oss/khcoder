@@ -1,0 +1,9 @@
+.DS_Store
+.Rhistory
+config/coder.ini
+config/coder.ini.bak
+config/projects
+config/projects_trush
+config/win.ini
+config/khc*/
+screen/

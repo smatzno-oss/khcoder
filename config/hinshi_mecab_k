@@ -1,0 +1,9 @@
+hinshi_id,kh_hinshi,condition1,condition2
+2,ProperNoun,"Noun-固有名詞",
+1,Noun,"Noun-普通",
+25,Adj,"Adjective-自立",
+30,Adv,"Adverb-一般",
+35,Verb,"Verb-自立",
+50,Unknown,UNKNOWN,
+99999,HTML_TAG,TAG,HTML
+11,TAG,TAG,
