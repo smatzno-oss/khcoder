@@ -13,8 +13,8 @@ use kh_project;
 
 my ($username, $password, $host, $port, $type, $socket);
 if ($::config_obj){
-	$username = $::config_obj->sql_username;
-	$password = $::config_obj->sql_password;
+	$username = $::config_obj->sql_username || "root";
+	$password = $::config_obj->sql_password || "khcoder";
 	$host     = $::config_obj->sql_host;
 	$port     = $::config_obj->sql_port;
 	$type     = $::config_obj->sql_type;
@@ -32,6 +32,9 @@ my $mysgl_itegrity = 0;
 #------------#
 
 sub dsn_gen{
+    my $self = shift if @_ > 1;
+    my $db = shift;
+    return "DBI:mysql:database=$db;host=mysql;port=3306;mysql_local_infile=1";
 	#my $self = shift;
 	my $db   = shift;
 	
@@ -39,9 +42,9 @@ sub dsn_gen{
 		return "DBI:mysql:database=$db;$host;port=$port;mysql_local_infile=1";
 	} else {
 		if ($::config_obj->os eq 'win32'){
-			return "DBI:mysql:database=$db;host=.;mysql_socket=$socket;mysql_local_infile=1";
+			return "DBI:mysql:database=$db;host=.;host=mysql;port=3306;mysql_local_infile=1";
 		} else {
-			return "DBI:mysql:database=$db;mysql_socket=$socket;mysql_local_infile=1";
+			return "DBI:mysql:database=$db;host=mysql;port=3306;mysql_local_infile=1";
 		}
 	}
 }
